@@ -89,6 +89,10 @@ fun Application.configureRouting() {
                         }
                     }
                 }
+                delete("/deleteFestival/{id}"){
+                    maGestion.deleteFestival(call.parameters["id"]!!)
+                    println("deleteFestival/{Id}-> $call.parameters[\"id\"]!!")
+                }
             }
 
             route("/benevoles"){
@@ -150,6 +154,10 @@ fun Application.configureRouting() {
                         }
                     }
                 }
+                delete("/deleteBenevole/{id}"){
+                    maGestion.deleteBenevole(call.parameters["id"]!!)
+                    println("deleteBenevole/{Id}-> $call.parameters[\"id\"]!!")
+                    }
             }
 
 

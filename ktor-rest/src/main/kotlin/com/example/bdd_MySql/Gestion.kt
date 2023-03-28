@@ -122,6 +122,16 @@ class Gestion() {
 
     }
 
+    //ok
+    fun deleteFestival(id:String){
+        var prepStatement = laConnexion.getConnexion()
+            .prepareStatement(
+                " DELETE FROM festivals WHERE (id=?)"
+            )
+        prepStatement.setString(1, id)
+        prepStatement.executeUpdate()
+    }
+
     //ok//
     fun readAdministrateurs(): ArrayList<Administrateur> {
         var administrateurs = ArrayList<Administrateur>()
@@ -273,110 +283,7 @@ class Gestion() {
         return benevole
     }
 
-    /*  fun readBenevole(id: String): Benevole {
-          var benevole = Benevole()
-          var arDates = ArrayList<String>()
-          var prepStatement = laConnexion.getConnexion()
-              .prepareStatement(
-                  " SELECT DISTINCT b.id,\n" +
-                          "                f.id,\n" +
-                          "                b.nom,\n" +
-                          "                b.prenom,\n" +
-                          "                b.email,\n" +
-                          "                b.login,\n" +
-                          "                b.motdepasse,\n" +
-                          "                b.autorisation,\n" +
-                          "                df.dates,\n" +
-                          "                s.nom\n" +
-                          "FROM benevoles b\n" +
-                          "         JOIN dates_joint_benevoles djb ON b.id = djb.benevole_id_benevole\n" +
-                          "         JOIN dates_festivals df on df.id = djb.dates_festivals_id\n" +
-                          "         JOIN festivals f on f.id = df.festivals_id_festival\n" +
-                          "         JOIN benevoles_joint_stands bjs ON b.id = bjs.benevoles_id_benevoles\n" +
-                          "         JOIN stands s on s.id = bjs.stands_id_stands\n" +
-                          "WHERE b.id=?"
-              )
-          prepStatement.setString(1, id)
-          var rs = prepStatement.executeQuery()
-          while (rs.next()) {
-              if (!(arDates.contains(rs.getString("dates"))))
-                  arDates.add(rs.getString("dates"))
-              benevole.id = (rs.getInt("b.id"))
-              benevole.id_festival = rs.getInt("f.id")
-              benevole.nom = rs.getString("b.nom")
-              benevole.prenom = rs.getString("b.prenom")
-              benevole.email = rs.getString("b.email")
-              benevole.login = rs.getString("b.login")
-              benevole.motdepasse = rs.getString("b.motdepasse")
-              benevole.autorisation = rs.getInt("b.autorisation")
-          }
-          benevole.dates = arDates
-
-          return benevole
-      }*/
-
-    /*
-        fun readBenevolesFull(): ArrayList<Benevole> {
-            println("dans readBenevolesFull()")
-            var arBenevoles = ArrayList<Benevole>()
-            var arIdStand = ArrayList<Int>()
-            var benevole = Benevole()
-            var prepStatement = laConnexion.getConnexion()
-                .prepareStatement(
-                    " SELECT            b.id,\n" +
-                            "                f.id,\n" +
-                            "                b.nom,\n" +
-                            "                b.prenom,\n" +
-                            "                b.email,\n" +
-                            "                b.login,\n" +
-                            "                b.motdepasse,\n" +
-                            "                b.autorisation,\n" +
-                            "                df.dates,\n" +
-                            "                s.nom\n" +
-                            "FROM benevoles b\n" +
-                            "         JOIN dates_joint_benevoles djb ON b.id = djb.benevole_id_benevole\n" +
-                            "         JOIN dates_festivals df on df.id = djb.dates_festivals_id\n" +
-                            "         JOIN festivals f on f.id = df.festivals_id_festival\n" +
-                            "         JOIN benevoles_joint_stands bjs ON b.id = bjs.benevoles_id_benevoles\n" +
-                            "         JOIN stands s on s.id = bjs.stands_id_stands"
-                )
-            var rs = prepStatement.executeQuery()
-            var existeIdBenevole = -1
-            while (rs.next()) {
-                var idBenevole = rs.getInt("b.id")
-                arBenevoles.forEachIndexed { index, benevole ->
-                    if (idBenevole == benevole.id) {
-                        existeIdBenevole = index
-                        return@forEachIndexed
-                    }
-                    else
-                        existeIdBenevole = -1
-                }
-                if (existeIdBenevole != -1) {
-                    if (!(arBenevoles.get(existeIdBenevole).dates!!.contains(rs.getString("dates"))))
-                        arBenevoles.get(existeIdBenevole).dates!!.add(rs.getString("dates"))
-                }
-                if (existeIdBenevole == -1) {
-                    var arDates = ArrayList<String>()
-                    arDates.add(rs.getString("dates"))
-                    benevole = Benevole()
-                    benevole.id = idBenevole
-                    benevole.id_festival = rs.getInt("f.id")
-                    benevole.nom = (rs.getString("b.nom"))
-                    benevole.prenom = (rs.getString("prenom"))
-                    benevole.email = (rs.getString("email"))
-                    benevole.login = (rs.getString("login"))
-                    benevole.motdepasse = (rs.getString("motdepasse"))
-                    benevole.autorisation = (rs.getInt("autorisation"))
-                    benevole.dates = arDates
-                    arBenevoles.add(benevole)
-                }
-            }
-            println(arBenevoles)
-            return arBenevoles
-        }
-    */
-
+    //ok
     fun updateBenevole(benevole: Benevole): Int {
         println("dans updatebenevole--> $benevole")
         helpers_miseAjourJointureBenevolesDates(benevole)
@@ -396,6 +303,17 @@ class Gestion() {
         return prepStatement.executeUpdate()
     }
 
+    //ok
+    fun deleteBenevole(id:String){
+        var prepStatement = laConnexion.getConnexion()
+            .prepareStatement(
+                " DELETE FROM benevoles WHERE (id=?)"
+            )
+        prepStatement.setString(1, id)
+        prepStatement.executeUpdate()
+    }
+
+    //ok
     fun addBenevole(benevole: Benevole): Int {
         var prepStatement = laConnexion.getConnexion()
             .prepareStatement(
@@ -414,6 +332,7 @@ class Gestion() {
         return prepStatement.executeUpdate()
     }
 
+    //ok
     fun helpers_miseAjourJointureBenevolesDates(benevole: Benevole) {
         //vide la table de jointure du benevole
         var prepStatement = laConnexion.getConnexion()
