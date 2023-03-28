@@ -109,21 +109,6 @@ fun Application.configureRouting() {
                         }
                     }
                 }
-                get("/readBenevolesSimple") {
-                    var lesBenevoles = maGestion.readBenevolesSimple()
-                    lesBenevoles.sortBy { it.nom }
-                    when (lesBenevoles.size > 0) {
-                        true -> {
-                            call.respond(HttpStatusCode.OK, lesBenevoles)
-                            println("readBenevolesSimple-> $lesBenevoles")
-                        }
-                        false -> {
-                            call.respond(HttpStatusCode.NotFound)
-                            println("readBenevolesSimple-> NotFound ")
-                        }
-                    }
-                }
-
                 get("/readBenevole/{id}"){
                     var benevole = maGestion.readBenevole(call.parameters["id"]!!)
                     println("readBenevole/{Id}-> $benevole ")
@@ -135,7 +120,6 @@ fun Application.configureRouting() {
                             call.respond(HttpStatusCode.NotFound)
                         }
                     }
-
                 }
                 put("/updateBenevole"){
                     val benevole = call.receive<Benevole>()
