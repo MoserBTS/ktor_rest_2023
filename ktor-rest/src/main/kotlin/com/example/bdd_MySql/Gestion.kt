@@ -397,12 +397,11 @@ class Gestion() {
     }
 
     fun addBenevole(benevole: Benevole): Int {
-        helpers_miseAjourJointureBenevolesDates(benevole)
         var prepStatement = laConnexion.getConnexion()
             .prepareStatement(
                 "INSERT \n" +
-                        "INTO benevoles (nom, prenom, email, login, motdepasse, autorisation)\n" +
-                        "VALUES (?,?,?,?,?,?)"
+                        "INTO benevoles (nom, prenom, email, login, motdepasse, autorisation,festivals_id_festival)\n" +
+                        "VALUES (?,?,?,?,?,?,?)"
             )
         prepStatement.setString(1, benevole.nom)
         prepStatement.setString(2, benevole.prenom)
@@ -410,6 +409,7 @@ class Gestion() {
         prepStatement.setString(4, benevole.login)
         prepStatement.setString(5, benevole.motdepasse)
         prepStatement.setInt(6, benevole.autorisation!!)
+        prepStatement.setInt(7, benevole.id_festival!!)
         println(prepStatement.toString())
         return prepStatement.executeUpdate()
     }

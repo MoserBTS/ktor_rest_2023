@@ -139,6 +139,7 @@ fun Application.configureRouting() {
                     val benevole = call.receive<Benevole>()
                     println("/addBenevole $benevole")
                     val etat = maGestion.addBenevole(benevole)
+                    println("resultatSet de addBenevole $etat")
                     when (etat) {
                         1 -> {
                             call.respond(HttpStatusCode.OK)
