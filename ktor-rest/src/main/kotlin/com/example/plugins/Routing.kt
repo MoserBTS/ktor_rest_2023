@@ -89,6 +89,21 @@ fun Application.configureRouting() {
                         }
                     }
                 }
+                post ("/addFestival"){
+                    val festival = call.receive<Festival>()
+                    println("/addFestival $festival")
+                    val etat = maGestion.addFestival(festival)
+                    println("resultatSet de addBenevole $etat")
+                    when (etat) {
+                        1 -> {
+                            call.respond(HttpStatusCode.OK)
+                            println("le festival ${festival} , est bien ajouter")
+                        }
+                        else -> {
+                            call.respond(HttpStatusCode.NotFound)
+                        }
+                    }
+                }
                 delete("/deleteFestival/{id}"){
                     maGestion.deleteFestival(call.parameters["id"]!!)
                     println("deleteFestival/{Id}-> $call.parameters[\"id\"]!!")
@@ -147,7 +162,7 @@ fun Application.configureRouting() {
                     when (etat) {
                         1 -> {
                             call.respond(HttpStatusCode.OK)
-                            println("le bénévole ${benevole} , est bien modifier")
+                            println("le bénévole ${benevole} , est bien ajouter")
                         }
                         else -> {
                             call.respond(HttpStatusCode.NotFound)

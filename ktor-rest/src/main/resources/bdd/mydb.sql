@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 28 mars 2023 à 22:16
+-- Généré le : mer. 29 mars 2023 à 09:08
 -- Version du serveur : 10.4.25-MariaDB
 -- Version de PHP : 8.1.10
 
@@ -298,27 +298,27 @@ ALTER TABLE `benevoles`
 -- Contraintes pour la table `benevoles_joint_stands`
 --
 ALTER TABLE `benevoles_joint_stands`
-  ADD CONSTRAINT `fk_benevoles_has_stands_benevoles1` FOREIGN KEY (`benevoles_id_benevoles`) REFERENCES `benevoles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_benevoles_has_stands_stands1` FOREIGN KEY (`stands_id_stands`) REFERENCES `stands` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_benevoles_has_stands_benevoles1` FOREIGN KEY (`benevoles_id_benevoles`) REFERENCES `benevoles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_benevoles_has_stands_stands1` FOREIGN KEY (`stands_id_stands`) REFERENCES `stands` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `dates_festivals`
 --
 ALTER TABLE `dates_festivals`
-  ADD CONSTRAINT `fk_dates_festivals_festivals1` FOREIGN KEY (`festivals_id_festival`) REFERENCES `festivals` (`id`);
+  ADD CONSTRAINT `fk_dates_festivals_festivals1` FOREIGN KEY (`festivals_id_festival`) REFERENCES `festivals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `dates_joint_benevoles`
 --
 ALTER TABLE `dates_joint_benevoles`
-  ADD CONSTRAINT `dates_joint_benevoles_ibfk_2` FOREIGN KEY (`dates_festivals_id`) REFERENCES `dates_festivals` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_dates_benevoles_has_benevoles_benevoles1` FOREIGN KEY (`benevole_id_benevole`) REFERENCES `benevoles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `dates_joint_benevoles_ibfk_2` FOREIGN KEY (`dates_festivals_id`) REFERENCES `dates_festivals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_dates_benevoles_has_benevoles_benevoles1` FOREIGN KEY (`benevole_id_benevole`) REFERENCES `benevoles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `stands`
 --
 ALTER TABLE `stands`
-  ADD CONSTRAINT `fk_stands_festivals1` FOREIGN KEY (`festivals_id_festival`) REFERENCES `festivals` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_stands_festivals1` FOREIGN KEY (`festivals_id_festival`) REFERENCES `festivals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

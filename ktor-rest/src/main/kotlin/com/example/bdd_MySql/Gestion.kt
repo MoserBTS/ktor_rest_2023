@@ -13,6 +13,17 @@ class Gestion() {
         laConnexion.voirLesBdd().forEach { bdd -> println(bdd) }
     }
 
+    fun addFestival(festival: Festival):Int{
+        var prepStatement = laConnexion.getConnexion()
+            .prepareStatement(
+                "INSERT \n" +
+                        "INTO festivals (nom)\n" +
+                        "VALUES (?)"
+            )
+        prepStatement.setString(1, festival.nom)
+        println(prepStatement.toString())
+        return prepStatement.executeUpdate()
+    }
     //ok//
     fun readFestivals(): ArrayList<Festival> {
         var arFestivals = ArrayList<Festival>()
