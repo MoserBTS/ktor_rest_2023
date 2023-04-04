@@ -2,6 +2,7 @@ package com.example.plugins
 
 import com.example.models.benevoles.Benevole
 import com.example.models.festivals.Festival
+import com.example.models.stands.Stand
 import io.ktor.http.*
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
@@ -175,57 +176,83 @@ fun Application.configureRouting() {
                     }
             }
 
-
-
-            /*    post("/ajouterUnEtudiant") {
-                    val etudiant = call.receive<Etudiant>()
-                    val etat=maGestion.ajoutEtudiant(etudiant)
-                    println("dans /ajouterUnEtudiant-> $etudiant ")
-                    when(etat){
-                        1->{
-                            call.respond(HttpStatusCode.OK)
-                            println("${etudiant.firstname} , ${etudiant.lastname} est bien créé")
+            route("/stands"){
+                get("/readStandsFull") {
+                    var lesStands = maGestion.readStandsFull()
+                    lesStands.forEach { println(it) }
+                    lesStands = lesStands.distinct() as ArrayList<Stand>
+                    lesStands.sortBy { it.id_festival}
+                    when (lesStands.size > 0) {
+                        true -> {
+                            call.respond(HttpStatusCode.OK, lesStands)
+                            println("readBenevolesFull-> $lesStands")
                         }
-                        else->{
+                        false -> {
+                            call.respond(HttpStatusCode.NotFound)
+                            println("readBenevolesFull-> NotFound ")
+                        }
+                    }
+                }
+                get("/readStand/{id}"){
+                    var benevole = maGestion.readStand(call.parameters["id"]!!)
+                    println("readBenevole/{Id}-> $benevole ")
+                    when (benevole.id != -1) {
+                        true->{
+                            call.respond(HttpStatusCode.OK, benevole)
+                        }
+                        false->{
                             call.respond(HttpStatusCode.NotFound)
                         }
                     }
                 }
-
-                post("/supprimerUnEtudiant") {
-                    val etudiant = call.receive<Etudiant>()
-                    println("dans /supprimerUnEtudiant-> $etudiant ")
-                    val etat=maGestion.supprimerUnEtudiant(etudiant.id!!)
-                    when(etat){
-                        1->{
-                            call.respond(HttpStatusCode.OK)
+                get("/searchStands/{term}"){
+                    var stands = maGestion.searchStands(call.parameters["term"]!!)
+                    println("searchStands/{term}-> $stands ")
+                    when (stands.size>0) {
+                        true->{
+                            call.respond(HttpStatusCode.OK, stands)
                         }
-                        else->{
+                        false->{
                             call.respond(HttpStatusCode.NotFound)
                         }
                     }
                 }
+                /* put("/updateStand"){
+                     val benevole = call.receive<Benevole>()
+                     println("/updateBenevole $benevole")
+                     val etat = maGestion.updateBenevole(benevole)
+                     when (etat) {
+                         1 -> {
+                             call.respond(HttpStatusCode.OK)
+                             println("le bénévole ${benevole} , est bien modifier")
+                         }
+                         else -> {
+                             call.respond(HttpStatusCode.NotFound)
+                         }
+                     }
+                 }
 
-
+                 post ("/addStand"){
+                     val benevole = call.receive<Benevole>()
+                     println("/addBenevole $benevole")
+                     val etat = maGestion.addBenevole(benevole)
+                     println("resultatSet de addBenevole $etat")
+                     when (etat) {
+                         1 -> {
+                             call.respond(HttpStatusCode.OK)
+                             println("le bénévole ${benevole} , est bien ajouter")
+                         }
+                         else -> {
+                             call.respond(HttpStatusCode.NotFound)
+                         }
+                     }
+                 }
+                 delete("/deleteStand/{id}"){
+                     maGestion.deleteBenevole(call.parameters["id"]!!)
+                     println("deleteBenevole/{Id}-> $call.parameters[\"id\"]!!")
+                 }*/
             }
 
-            route("/test") {
-                get("/") {
-                    call.respondText("get sans parametre")
-                }
-              *//*  get("/parameter") {
-                var parameter = call.request.queryParameters["parameter"]
-                call.respondText("get avec  parametre: $parameter")
-            }*//*
-            get("/parameter/{parameter}") {
-                var parameter = call.parameters["parameter"]
-                call.respondText("get avec  parametre: $parameter")
-            }
-
-            post("/") {
-                val postParameters: Parameters = call.receiveParameters()
-                call.respondText("post avec  parametre: ${postParameters["parameter"]}")
-            }*/
         }
     }
 }

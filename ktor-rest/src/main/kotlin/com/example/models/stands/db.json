@@ -1,0 +1,86 @@
+{
+  "stands": [
+    {
+      "id": 1,
+      "id_festival": 1,
+      "nom": "stand A"
+    },
+    {
+      "id": 2,
+      "id_festival": 1,
+      "nom": "Stand B",
+      "type": "vente"
+    },
+    {
+      "id": 3,
+      "id_festival": 1,
+      "nom": "Stand C",
+      "type": "vente"
+    },
+    {
+      "id": 4,
+      "id_festival": 1,
+      "nom": "Stand D",
+      "type": "recharge"
+    },
+    {
+      "id": 5,
+      "id_festival": 1,
+      "nom": "Stand E",
+      "type": "recharge"
+    },
+    {
+      "id": 6,
+      "id_festival": 1,
+      "nom": "Stand F",
+      "type": "vente"
+    },
+    {
+      "id": 7,
+      "id_festival": 1,
+      "nom": "Stand H",
+      "type": "default"
+    },
+    {
+      "id": 8,
+      "id_festival": 1,
+      "nom": "stand I"
+    },
+    {
+      "id": 9,
+      "id_festival": 1,
+      "nom": "Stand J",
+      "type": "vente"
+    },
+    {
+      "id": 10,
+      "id_festival": 2,
+      "nom": "Stand K",
+      "type": "vente"
+    },
+    {
+      "id": 11,
+      "id_festival": 2,
+      "nom": "Stand L",
+      "type": "recharge"
+    },
+    {
+      "id": 12,
+      "id_festival": 2,
+      "nom": "Stand M",
+      "type": "recharge"
+    },
+    {
+      "id": 13,
+      "id_festival": 2,
+      "nom": "Stand N",
+      "type": "vente"
+    },
+    {
+      "id": 14,
+      "id_festival": 2,
+      "nom": "Stand O",
+      "type": "default"
+    }
+  ]
+}

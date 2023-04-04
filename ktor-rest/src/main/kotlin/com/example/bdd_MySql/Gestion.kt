@@ -3,7 +3,7 @@ package com.serveur.bdd_MySql
 import com.example.models.administrateurs.Administrateur
 import com.example.models.benevoles.Benevole
 import com.example.models.festivals.Festival
-
+import com.example.models.stands.Stand
 
 class Gestion() {
     var laConnexion = Connexion("jdbc:mysql://localhost/mydb", "root", "")
@@ -13,7 +13,8 @@ class Gestion() {
         laConnexion.voirLesBdd().forEach { bdd -> println(bdd) }
     }
 
-    fun addFestival(festival: Festival):Int{
+    //ok//
+    fun addFestival(festival: Festival): Int {
         var prepStatement = laConnexion.getConnexion()
             .prepareStatement(
                 "INSERT \n" +
@@ -24,6 +25,7 @@ class Gestion() {
         println(prepStatement.toString())
         return prepStatement.executeUpdate()
     }
+
     //ok//
     fun readFestivals(): ArrayList<Festival> {
         var arFestivals = ArrayList<Festival>()
@@ -134,7 +136,7 @@ class Gestion() {
     }
 
     //ok
-    fun deleteFestival(id:String){
+    fun deleteFestival(id: String) {
         var prepStatement = laConnexion.getConnexion()
             .prepareStatement(
                 " DELETE FROM festivals WHERE (id=?)"
@@ -252,7 +254,7 @@ class Gestion() {
         return arBenevoles
     }
 
-    //ok
+    //ok//
     fun readBenevole(id: String): Benevole {
         var benevole = Benevole()
         var arDates = ArrayList<String>()
@@ -294,7 +296,7 @@ class Gestion() {
         return benevole
     }
 
-    //ok
+    //ok//
     fun updateBenevole(benevole: Benevole): Int {
         println("dans updatebenevole--> $benevole")
         helpers_miseAjourJointureBenevolesDates(benevole)
@@ -314,8 +316,8 @@ class Gestion() {
         return prepStatement.executeUpdate()
     }
 
-    //ok
-    fun deleteBenevole(id:String){
+    //ok//
+    fun deleteBenevole(id: String) {
         var prepStatement = laConnexion.getConnexion()
             .prepareStatement(
                 " DELETE FROM benevoles WHERE (id=?)"
@@ -324,7 +326,7 @@ class Gestion() {
         prepStatement.executeUpdate()
     }
 
-    //ok
+    //ok//
     fun addBenevole(benevole: Benevole): Int {
         var prepStatement = laConnexion.getConnexion()
             .prepareStatement(
@@ -343,18 +345,20 @@ class Gestion() {
         return prepStatement.executeUpdate()
     }
 
-    //ok
+    //ok//
     fun helpers_miseAjourJointureBenevolesDates(benevole: Benevole) {
         //vide la table de jointure du benevole
         var prepStatement = laConnexion.getConnexion()
-            .prepareStatement("DELETE FROM dates_joint_benevoles\n" +
-                    "       WHERE (benevole_id_benevole=?)")
+            .prepareStatement(
+                "DELETE FROM dates_joint_benevoles\n" +
+                        "       WHERE (benevole_id_benevole=?)"
+            )
         prepStatement.setInt(1, benevole.id!!)
         prepStatement.execute()
 
         //refabrique la table de jointure du benevole
         benevole.dates!!.forEach {
-             prepStatement = laConnexion.getConnexion()
+            prepStatement = laConnexion.getConnexion()
                 .prepareStatement(
                     " INSERT\n" +
                             "    INTO dates_joint_benevoles  (benevole_id_benevole, dates_festivals_id)\n" +
@@ -374,52 +378,66 @@ class Gestion() {
 
     }
 
-
-    /* fun lireUnEtudiants(id: String): Etudiant {
-     lateinit var etudiant: Etudiant
-     var prepStatement = laConnexion.getConnexion().prepareStatement("SELECT * from info where id=?")
-     prepStatement.setString(1, id)
-     var rs = prepStatement.executeQuery()
-     while (rs.next()) {
-         etudiant = Etudiant(
-             rs.getInt("id"),
-
-             rs.getString("firstname"),
-             rs.getString("lastname"),
-             rs.getString("age"),
-             rs.getString("image")
-         )
-     }
-     println(etudiant)
-     return etudiant
+    //ok//
+    fun readStandsFull(): ArrayList<Stand> {
+        var arStands = ArrayList<Stand>()
+        var prepStatement = laConnexion.getConnexion()
+            .prepareStatement(
+                "SELECT st.id,st.festivals_id_festival,st.nom\n" +
+                        "        FROM stands st\n" +
+                        "        ORDER BY st.festivals_id_festival"
+            )
+        var rs = prepStatement.executeQuery()
+        while (rs.next()) {
+            arStands.add(
+                Stand(
+                    rs.getInt("id"),
+                    rs.getInt("festivals_id_festival"),
+                    rs.getString("nom")
+                )
+            )
+        }
+        return arStands
     }
 
-    fun ajoutEtudiant(etudiant: Etudiant): Int {
-     var prepStatement = laConnexion.getConnexion()
-         .prepareStatement("insert into etudiants.info(firstname, lastname, age, image) VALUES (?, ?, ?, ?) ")
-     prepStatement.setString(1, etudiant.firstname)
-     prepStatement.setString(2, etudiant.lastname)
-     prepStatement.setString(3, etudiant.age)
-     prepStatement.setString(4, etudiant.image)
-     return prepStatement.executeUpdate()
+    fun readStand(id: String): Stand {
+        var stand = Stand()
+        var prepStatement = laConnexion.getConnexion()
+            .prepareStatement(
+                "SELECT st.id,st.festivals_id_festival,st.nom\n" +
+                        "        FROM stands st\n" +
+                        "        WHERE st.id=?"
+            )
+        prepStatement.setString(1,id)
+        var rs = prepStatement.executeQuery()
+        while (rs.next()) {
+            stand.id=rs.getInt("id")
+            stand.id_festival=rs.getInt("festivals_id_festival")
+            stand.nom=rs.getString("nom")
+        }
+        return stand
     }
 
-    fun supprimerUnEtudiant(id: Int): Int {
-     var prepStatement = laConnexion.getConnexion()
-         .prepareStatement("delete from etudiants.info where id=?")
-     prepStatement.setInt(1, id)
-     return prepStatement.executeUpdate()
+    fun searchStands(term:String):ArrayList<Stand>{
+        var arStands = ArrayList<Stand>()
+        var prepStatement = laConnexion.getConnexion()
+            .prepareStatement(
+                "SELECT *\n" +
+                        "FROM stands st\n" +
+                        "WHERE st.nom LIKE CONCAT(?,'%')"
+            )
+        prepStatement.setString(1,term)
+        var rs = prepStatement.executeQuery()
+        while (rs.next()) {
+            arStands.add(
+                Stand(
+                    rs.getInt("id"),
+                    rs.getInt("festivals_id_festival"),
+                    rs.getString("nom")
+                )
+            )
+        }
+        return arStands
     }
-
-    fun miseAJourEtudiant(etudiant: Etudiant): Int {
-     var prepStatement = laConnexion.getConnexion()
-         .prepareStatement("UPDATE info SET firstname = ?,lastname = ?,age = ?,image = ? WHERE id = ?")
-     prepStatement.setString(1, etudiant.firstname)
-     prepStatement.setString(2, etudiant.lastname)
-     prepStatement.setString(3, etudiant.age)
-     prepStatement.setString(4, etudiant.image)
-     prepStatement.setInt(5, etudiant.id!!)
-     return prepStatement.executeUpdate()
-    }*/
 
 }
